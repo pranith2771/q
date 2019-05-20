@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="613e5ce6-b19d-46c2-938a-87e6e761fa53" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="tuesdayFlow" doc:id="79ed66c7-ef7a-483c-be45-7c5508037a0a" >
+		<http:listener doc:name="Listener" doc:id="15887334-eb42-4a3f-837f-59b3a0420ed0" config-ref="HTTP_Listener_config" path="/test" outputMimeType="application/json"/>
+		<logger level="INFO" doc:name="Logger" doc:id="a6cf63b9-bc09-446b-9642-ed37dca05912" message="Names"/>
+		<set-payload value='#[output application/json
+---
+{
+FirstName:payload.FirstName,
+LastName:payload.LastName,
+FullName:payload.FirstName ++ " " ++ payload:LastName
+
+}]' doc:name="Set Payload" doc:id="1b0659b3-f34b-4244-9728-ec4413440d9e" mimeType="application/json"/>
+	</flow>
+	<flow name="tuesdayFlow1" doc:id="0c1f9562-e4c3-4d7d-aa09-fabb032873e8" >
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="c8417ed8-ee7c-4abc-b568-8cf448de7134" />
+	</flow>
+</mule>
